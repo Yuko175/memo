@@ -27,6 +27,8 @@ VS Codeを完全に終了し、再起動します。
 再度、VS Codeからリポジトリのクローンを試します。
 
 
+アプリのアンインストール
+https://support.microsoft.com/ja-jp/windows/windows-でアプリとプログラムをアンインストールまたは削除する-4b55f974-2cc6-2d2b-d092-5905080eaf98
 
 
 
