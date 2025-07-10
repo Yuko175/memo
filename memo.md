@@ -1,59 +1,30 @@
-ロボットアイコン
-https://www.irasutoya.com/2014/11/blog-post_288.html?m=1
+https://solutions.vaio.com/5439
 
-フリーイラスト
-https://soco-st.com
+schanel: failed to receive handshake, SSL/TLS connection failed エラーは、多くの場合、プロキシ環境下でGitが正しく設定されていないことが原因です。
 
-写真
-https://unsplash.com/ja
+Gitにプロキシ設定を行う
 
-あなたの投稿
-ID
-タイトル
-内容
-日時
-Eメール
-ウェルビーのしゅるい
-いいねリレ
-いいね数
-ジャンルリレ
-ジャンル画像
-投稿リレ
-コメント
+これが最も一般的で安全な解決策です。Gitに対して、使用しているプロキシサーバーのアドレスとポート番号を設定します。
 
-ジャンル
-ウェルビーしゅるい
-ウェルビー内容
-ウェルビー画像
-あなたの投稿リレ
-カウント
+コマンドプロンプト、PowerShell、またはGit Bashを開きます。
+以下のコマンドを実行してプロキシを設定します。
 
-コメント
-ID
-Eメール
-日時
-本文
-ユーザリレ
-ユーザ名
-画像
-
-いいね
-ID
-
-投稿一覧
-ろうID
-タイトル
-ウェルビー種類
-内容
-日時
-Eメール
-ユーザリレ
-ユーザ名
-ジャンルリレ
-ジャンル画像
-コメントリレ
-いいねリレ
-いいね数
+<proxy-server-address> と <port> の部分を、お使いのプロキシサーバーの情報に置き換えてください。(プロキシの情報は、会社の情報システム部門などにご確認ください。)
+```bush
+git config --global http.proxy http://<proxy-server-address>:<port>
+```
+```bush
+git config --global https.proxy http://<proxy-server-address>:<port>
+```
+プロキシで認証が必要な場合は、以下のようにユーザー名とパスワードを含めます。
+```bush
+git config --global http.proxy http://<username>:<password>@<proxy-server-address>:<port>
+```
+```bush
+git config --global https.proxy http://<username>:<password>@<proxy-server-address>:<port>
+```
+VS Codeを完全に終了し、再起動します。
+再度、VS Codeからリポジトリのクローンを試します。
 
 
 
