@@ -1,4 +1,5 @@
-https://solutions.vaio.com/5439
+https://qiita.com/iwantit/items/528423cf133013f2240f 
+https://mebee.info/2021/07/22/post-29741/ https://solutions.vaio.com/5439
 
 schanel: failed to receive handshake, SSL/TLS connection failed エラーは、多くの場合、プロキシ環境下でGitが正しく設定されていないことが原因です。
 
