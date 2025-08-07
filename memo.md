@@ -1,3 +1,12 @@
+mkdir cnf/xxx;
+cd cnf;
+=CONCAT("cp template.cnf cnf/",A7,"_ ",C7,".cnf;")
+sed -i -e "s/\(commonName_default\s*=\s*\).*/\1XXXXX/" "(XX) XXXXX.cnf";
+sed -i -e "s/\(CN\s*=\s*\).*/\1XXXXX/" "(XX) XXXXX.cnf";
+sed -i -e "s/\(DNS.1\s*=\s*\).*/\1XXXXX/" "(XX) XXXXX.cnf";
+sed -i -e "s/\(IP.1\s*=\s*\).*/\1XXX.XXX.XXX.XXX/" "(XX) XXXXX.cnf";
+cd ../;
+openssl req -new -key server.key -out "./csr/(XX) XXXXX.csr" -config "./cnf/(XX) XXXXX.cnf";
 
 
 年齢
