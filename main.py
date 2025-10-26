@@ -87,12 +87,9 @@ def page_1():
     # 3) AgGridの表示（フォーム）
     # --------------------------------
     with st.form(key="grid_form"):
-        # 更新ボタンと保存ボタンを左右のカラムに配置して、保存ボタンを右側に寄せる
-        col_left, col_right = st.columns([8, 1])
-        # with col_left:
-        #     submit_button = st.form_submit_button("🔄更新")
-        with col_right:
-            save_button = st.form_submit_button("保存")
+        # タスクを追加ボタンの下に保存エラーを表示する（フォーム外）
+        if st.session_state.get("save_error"):
+            st.warning(st.session_state.save_error)
 
         grid_response = AgGrid(
             st.session_state.data,
@@ -133,6 +130,14 @@ def page_1():
         #     else:
         #         st.warning("更新するデータがありません")
 
+        # 更新ボタンと保存ボタンを左右のカラムに配置して、保存ボタンを右側に寄せる
+        col_left, col_right = st.columns([8, 1])
+        with col_left:
+            #     submit_button = st.form_submit_button("🔄更新")
+            check_box_not_empty = st.checkbox("空白があっても許容する", value=False)
+        with col_right:
+            save_button = st.form_submit_button("保存")
+
         # 横並びにするためにカラムを作成
         col1, col2, col3 = st.columns(3)
         with col2:
@@ -151,10 +156,11 @@ def page_1():
             if df_tmp is not None:
                 st.session_state.data = df_tmp
             else:
-                st.warning("更新するデータがありません")
+                # st.warning("更新するデータがありません")
+                pass
 
             st.session_state.data = pd.DataFrame(grid_response["data"])
-            st.success("更新しました")
+            # st.success("更新しました")
 
             # フォーム内で選択されている行を取得して DataFrame にする（未定義エラーを回避）
             selected_rows = (
@@ -176,14 +182,15 @@ def page_1():
                 st.session_state.data = st.session_state.data[
                     ~st.session_state.data["タスクID"].isin(ids_to_delete)
                 ].reset_index(drop=True)
+                st.session_state.save_error = None
 
                 # 削除後、再表示するために直接再描画
                 st.rerun()
-                # 削除後に更新(フォームの送信をしたいので)ポップアップで更新ボタンが表示する
                 st.success("行を削除しました")
                 st.balloons()
             else:
-                st.warning("削除する行が選択されていません")
+                st.session_state.save_error = "削除する行が選択されていません"
+                st.rerun()
 
         # (C) 保存ボタン
         if save_button:
@@ -191,15 +198,32 @@ def page_1():
             df_tmp = _df_from_grid_response(grid_response)
             if df_tmp is not None:
                 st.session_state.data = df_tmp
-            else:
-                st.warning("更新するデータがありません")
-
             st.session_state.data = pd.DataFrame(grid_response["data"])
-            st.success("更新しました")
 
-            # 自動でページ2に遷移
-            st.session_state.page = "ページ 2"
-            st.rerun()
+            # 空白チェック
+            # pd.DataFrame(grid_response["data"])のセルに空白がある場合
+            print(st.session_state.data)
+            check_data_not_empty = (
+                False
+                if st.session_state.data.isnull().any().any()
+                or (st.session_state.data == "").any().any()
+                else True
+            )
+            print(check_data_not_empty, check_box_not_empty)
+
+            if check_data_not_empty or check_box_not_empty:
+                # 成功時はエラーメッセージをクリア
+                st.session_state.save_error = ""
+                # st.success("保存しました")
+                # 自動でページ2に遷移
+                st.session_state.page = "ページ 2"
+                st.rerun()
+            else:
+                # フォーム外（タスク追加ボタンの下）に表示する
+                st.session_state.save_error = (
+                    "空白セルがある行があります。保存できません。"
+                )
+                st.rerun()
 
     # AgGrid から返されるデータをセッションに反映
     if grid_response and grid_response.get("data") is not None:
